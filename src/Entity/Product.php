@@ -4,8 +4,13 @@ namespace App\Entity;
 
 use App\Repository\ProductRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
+use ApiPlatform\Core\Annotation\ApiResource;
 
 #[ORM\Entity(repositoryClass: ProductRepository::class)]
+/**
+ * @ApiResource()
+ */
 class Product
 {
     #[ORM\Id]

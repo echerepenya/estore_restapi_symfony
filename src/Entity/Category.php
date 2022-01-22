@@ -6,8 +6,13 @@ use App\Repository\CategoryRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
+use ApiPlatform\Core\Annotation\ApiResource;
 
 #[ORM\Entity(repositoryClass: CategoryRepository::class)]
+/**
+ * @ApiResource()
+ */
 class Category
 {
     #[ORM\Id]
@@ -21,13 +26,13 @@ class Category
     #[ORM\OneToMany(mappedBy: 'category', targetEntity: Product::class)]
     private $products;
 
-    #[ORM\OneToMany(mappedBy: 'category', targetEntity: VatRate::class)]
-    private $vatRates;
+    #[ORM\OneToMany(mappedBy: 'category', targetEntity: Vat::class)]
+    private $vats;
 
     public function __construct()
     {
         $this->products = new ArrayCollection();
-        $this->vatRates = new ArrayCollection();
+        $this->vats = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -78,33 +83,32 @@ class Category
     }
 
     /**
-     * @return Collection|VatRate[]
+     * @return Collection|Vat[]
      */
-    public function getVatRates(): Collection
+    public function getVats(): Collection
     {
-        return $this->vatRates;
+        return $this->vats;
     }
 
-    public function addVatRate(VatRate $vatRate): self
+    public function addVat(Vat $vat): self
     {
-        if (!$this->vatRates->contains($vatRate)) {
-            $this->vatRates[] = $vatRate;
-            $vatRate->setCategory($this);
+        if (!$this->vats->contains($vat)) {
+            $this->vats[] = $vat;
+            $vat->setCategory($this);
         }
 
         return $this;
     }
 
-    public function removeVatRate(VatRate $vatRate): self
+    public function removeVat(Vat $vat): self
     {
-        if ($this->vatRates->removeElement($vatRate)) {
+        if ($this->vats->removeElement($vat)) {
             // set the owning side to null (unless already changed)
-            if ($vatRate->getCategory() === $this) {
-                $vatRate->setCategory(null);
+            if ($vat->getCategory() === $this) {
+                $vat->setCategory(null);
             }
         }
 
         return $this;
     }
-
 }

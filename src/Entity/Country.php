@@ -6,8 +6,13 @@ use App\Repository\CountryRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
+use ApiPlatform\Core\Annotation\ApiResource;
 
 #[ORM\Entity(repositoryClass: CountryRepository::class)]
+/**
+ * @ApiResource()
+ */
 class Country
 {
     #[ORM\Id]
@@ -22,12 +27,12 @@ class Country
     #[ORM\JoinColumn(nullable: false)]
     private $locale;
 
-    #[ORM\OneToMany(mappedBy: 'country', targetEntity: VatRate::class)]
-    private $vatRates;
+    #[ORM\OneToMany(mappedBy: 'country', targetEntity: Vat::class)]
+    private $vats;
 
     public function __construct()
     {
-        $this->vatRates = new ArrayCollection();
+        $this->vats = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -60,35 +65,32 @@ class Country
     }
 
     /**
-     * @return Collection|VatRate[]
+     * @return Collection|Vat[]
      */
-    public function getVatRates(): Collection
+    public function getVats(): Collection
     {
-        return $this->vatRates;
+        return $this->vats;
     }
 
-    public function addVatRate(VatRate $vatRate): self
+    public function addVat(Vat $vat): self
     {
-        if (!$this->vatRates->contains($vatRate)) {
-            $this->vatRates[] = $vatRate;
-            $vatRate->setCountry($this);
+        if (!$this->vats->contains($vat)) {
+            $this->vats[] = $vat;
+            $vat->setCountry($this);
         }
 
         return $this;
     }
 
-    public function removeVatRate(VatRate $vatRate): self
+    public function removeVat(Vat $vat): self
     {
-        if ($this->vatRates->removeElement($vatRate)) {
+        if ($this->vats->removeElement($vat)) {
             // set the owning side to null (unless already changed)
-            if ($vatRate->getCountry() === $this) {
-                $vatRate->setCountry(null);
+            if ($vat->getCountry() === $this) {
+                $vat->setCountry(null);
             }
         }
 
         return $this;
     }
-
-
-
 }
