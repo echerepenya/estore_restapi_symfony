@@ -5,9 +5,20 @@ namespace App\Entity;
 use ApiPlatform\Core\Annotation\ApiResource;
 use App\Repository\LocaleRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: LocaleRepository::class)]
-#[ApiResource]
+#[ApiResource(
+    normalizationContext: [
+        'groups' => ['locale:read'],
+    ],
+    denormalizationContext: [
+        'groups' => ['locale:write'],
+    ],
+)]
+#[UniqueEntity("name")]
+#[UniqueEntity("iso1")]
 class Locale
 {
     #[ORM\Id]
@@ -15,13 +26,19 @@ class Locale
     #[ORM\Column(type: 'integer')]
     private $id;
 
-    #[ORM\Column(type: 'string', length: 255)]
+    #[ORM\Column(type: 'string', length: 255, unique: true)]
+    #[Groups(["locale:read", "locale:write", "country:read"])]
+    #[Assert\Valid()]
     private $name;
 
-    #[ORM\Column(type: 'string', length: 5)]
+    #[ORM\Column(type: 'string', length: 5, unique: true)]
+    #[Groups(["locale:read", "locale:write", "country:read"])]
+    #[Assert\Valid()]
     private $iso1;
 
     #[ORM\OneToOne(mappedBy: 'locale', targetEntity: Country::class, cascade: ['persist', 'remove'])]
+    #[ApiProperty(readableLink: false, writableLink: false)]
+    #[Groups(["locale:read", "locale:write"])]
     private $country;
 
     public function getId(): ?int

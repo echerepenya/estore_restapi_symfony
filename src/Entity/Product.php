@@ -5,9 +5,20 @@ namespace App\Entity;
 use ApiPlatform\Core\Annotation\ApiResource;
 use App\Repository\ProductRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: ProductRepository::class)]
-#[ApiResource]
+#[ApiResource(
+    normalizationContext: [
+        'groups' => ['product:read'],
+    ],
+    denormalizationContext: [
+        'groups' => ['product:write'],
+    ],
+)]
+#[UniqueEntity("name")]
 class Product
 {
     #[ORM\Id]
@@ -15,17 +26,23 @@ class Product
     #[ORM\Column(type: 'integer')]
     private $id;
 
-    #[ORM\Column(type: 'string', length: 255)]
+    #[ORM\Column(type: 'string', length: 255, unique: true)]
+    #[Groups(["product:read", "product:write", "category:read"])]
+    #[Assert\Valid()]
     private $name;
 
     #[ORM\Column(type: 'string', length: 1023, nullable: true)]
+    #[Groups(["product:read", "product:write", "category:read"])]
     private $description;
 
     #[ORM\Column(type: 'decimal', precision: 10, scale: 2)]
+    #[Groups(["product:read", "product:write", "category:read"])]
+    #[Assert\Valid()]
     private $price;
 
     #[ORM\ManyToOne(targetEntity: Category::class, inversedBy: 'products')]
     #[ORM\JoinColumn(nullable: false)]
+    #[Groups(["product:read", "product:write"])]
     private $category;
 
     public function getId(): ?int

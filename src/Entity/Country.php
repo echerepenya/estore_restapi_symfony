@@ -7,9 +7,19 @@ use App\Repository\CountryRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: CountryRepository::class)]
-#[ApiResource]
+#[ApiResource(
+    normalizationContext: [
+        'groups' => ['country:read'],
+    ],
+    denormalizationContext: [
+        'groups' => ['country:write'],
+    ],
+)]
+#[UniqueEntity("name")]
 class Country
 {
     #[ORM\Id]
@@ -17,14 +27,18 @@ class Country
     #[ORM\Column(type: 'integer')]
     private $id;
 
-    #[ORM\Column(type: 'string', length: 255)]
+    #[ORM\Column(type: 'string', length: 255, unique: true)]
+    #[Groups(["country:read", "country:write", "locale:read", "locale:write", "vat:read"])]
+    #[Assert\Valid()]
     private $name;
 
     #[ORM\OneToOne(inversedBy: 'country', targetEntity: Locale::class, cascade: ['persist', 'remove'])]
     #[ORM\JoinColumn(nullable: false)]
+    #[Groups(["country:read", "country:write", "locale:read"])]
     private $locale;
 
     #[ORM\OneToMany(mappedBy: 'country', targetEntity: VatRate::class)]
+    #[Groups(["country:read", "locale:read"])]
     private $vatRates;
 
     public function __construct()

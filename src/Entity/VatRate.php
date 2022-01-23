@@ -6,9 +6,22 @@ use ApiPlatform\Core\Annotation\ApiResource;
 use App\Repository\VatRateRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 #[ORM\Entity(repositoryClass: VatRateRepository::class)]
-#[ApiResource]
+#[ApiResource(
+    normalizationContext: [
+        'groups' => ['vat:read'],
+    ],
+    denormalizationContext: [
+        'groups' => ['vat:write'],
+    ],
+)]
+#[UniqueEntity(
+    fields:["country", "category"],
+    message:"This fields combination is already in use."
+    )]
 class VatRate
 {
     #[ORM\Id]
@@ -18,10 +31,12 @@ class VatRate
 
     #[ORM\ManyToOne(targetEntity: Country::class, inversedBy: 'vatRates')]
     #[ORM\JoinColumn(nullable: false)]
+    #[Groups(["vat:read", "vat:write"])]
     private $country;
 
     #[ORM\ManyToOne(targetEntity: Category::class, inversedBy: 'vat_rates')]
     #[ORM\JoinColumn(nullable: false)]
+    #[Groups(["vat:read", "vat:write"])]
     private $category;
 
     #[ORM\Column(type: 'decimal', precision: 4, scale: 2)]
@@ -32,6 +47,7 @@ class VatRate
      *      notInRangeMessage = "Values from {{ min }} to {{ max }} are acceptable",
      * )
      */
+    #[Groups(["vat:read", "vat:write", "product:read", "locale:read"])]
     private $vat;
 
     public function getId(): ?int
