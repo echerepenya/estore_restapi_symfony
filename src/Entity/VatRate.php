@@ -5,6 +5,7 @@ namespace App\Entity;
 use ApiPlatform\Core\Annotation\ApiResource;
 use App\Repository\VatRateRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: VatRateRepository::class)]
 #[ApiResource]
@@ -24,6 +25,13 @@ class VatRate
     private $category;
 
     #[ORM\Column(type: 'decimal', precision: 4, scale: 2)]
+    /**
+     * @Assert\Range(
+     *      min = 0,
+     *      max = 20,
+     *      notInRangeMessage = "Values from {{ min }} to {{ max }} are acceptable",
+     * )
+     */
     private $vat;
 
     public function getId(): ?int
