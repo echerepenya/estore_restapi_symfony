@@ -1,4 +1,7 @@
 api_platform:
+    title: 'Simple REST-API for ecommerce'
+    description: 'Test task by ECherepenya'
+    version: 0.1
     mapping:
         paths: ['%kernel.project_dir%/src/Entity']
     patch_formats:

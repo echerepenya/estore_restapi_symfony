@@ -2,17 +2,14 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Core\Annotation\ApiResource;
 use App\Repository\CategoryRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Validator\Constraints as Assert;
-use ApiPlatform\Core\Annotation\ApiResource;
 
 #[ORM\Entity(repositoryClass: CategoryRepository::class)]
-/**
- * @ApiResource()
- */
+#[ApiResource]
 class Category
 {
     #[ORM\Id]
@@ -23,16 +20,16 @@ class Category
     #[ORM\Column(type: 'string', length: 255)]
     private $name;
 
+    #[ORM\OneToMany(mappedBy: 'category', targetEntity: VatRate::class)]
+    private $vat_rates;
+
     #[ORM\OneToMany(mappedBy: 'category', targetEntity: Product::class)]
     private $products;
 
-    #[ORM\OneToMany(mappedBy: 'category', targetEntity: Vat::class)]
-    private $vats;
-
     public function __construct()
     {
+        $this->vat_rates = new ArrayCollection();
         $this->products = new ArrayCollection();
-        $this->vats = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -48,6 +45,36 @@ class Category
     public function setName(string $name): self
     {
         $this->name = $name;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|VatRate[]
+     */
+    public function getVatRates(): Collection
+    {
+        return $this->vat_rates;
+    }
+
+    public function addVatRate(VatRate $vatRate): self
+    {
+        if (!$this->vat_rates->contains($vatRate)) {
+            $this->vat_rates[] = $vatRate;
+            $vatRate->setCategory($this);
+        }
+
+        return $this;
+    }
+
+    public function removeVatRate(VatRate $vatRate): self
+    {
+        if ($this->vat_rates->removeElement($vatRate)) {
+            // set the owning side to null (unless already changed)
+            if ($vatRate->getCategory() === $this) {
+                $vatRate->setCategory(null);
+            }
+        }
 
         return $this;
     }
@@ -82,33 +109,4 @@ class Category
         return $this;
     }
 
-    /**
-     * @return Collection|Vat[]
-     */
-    public function getVats(): Collection
-    {
-        return $this->vats;
-    }
-
-    public function addVat(Vat $vat): self
-    {
-        if (!$this->vats->contains($vat)) {
-            $this->vats[] = $vat;
-            $vat->setCategory($this);
-        }
-
-        return $this;
-    }
-
-    public function removeVat(Vat $vat): self
-    {
-        if ($this->vats->removeElement($vat)) {
-            // set the owning side to null (unless already changed)
-            if ($vat->getCategory() === $this) {
-                $vat->setCategory(null);
-            }
-        }
-
-        return $this;
-    }
 }

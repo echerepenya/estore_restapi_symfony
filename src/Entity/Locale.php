@@ -2,15 +2,12 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Core\Annotation\ApiResource;
 use App\Repository\LocaleRepository;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Validator\Constraints as Assert;
-use ApiPlatform\Core\Annotation\ApiResource;
 
 #[ORM\Entity(repositoryClass: LocaleRepository::class)]
-/**
- * @ApiResource()
- */
+#[ApiResource]
 class Locale
 {
     #[ORM\Id]
@@ -21,8 +18,8 @@ class Locale
     #[ORM\Column(type: 'string', length: 255)]
     private $name;
 
-    #[ORM\Column(type: 'string', length: 8)]
-    private $iso;
+    #[ORM\Column(type: 'string', length: 5)]
+    private $iso1;
 
     #[ORM\OneToOne(mappedBy: 'locale', targetEntity: Country::class, cascade: ['persist', 'remove'])]
     private $country;
@@ -44,14 +41,14 @@ class Locale
         return $this;
     }
 
-    public function getIso(): ?string
+    public function getIso1(): ?string
     {
-        return $this->iso;
+        return $this->iso1;
     }
 
-    public function setIso(string $iso): self
+    public function setIso1(string $iso1): self
     {
-        $this->iso = $iso;
+        $this->iso1 = $iso1;
 
         return $this;
     }

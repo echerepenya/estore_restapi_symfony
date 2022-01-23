@@ -2,25 +2,25 @@
 
 namespace App\Repository;
 
-use App\Entity\Vat;
+use App\Entity\VatRate;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
- * @method Vat|null find($id, $lockMode = null, $lockVersion = null)
- * @method Vat|null findOneBy(array $criteria, array $orderBy = null)
- * @method Vat[]    findAll()
- * @method Vat[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ * @method VatRate|null find($id, $lockMode = null, $lockVersion = null)
+ * @method VatRate|null findOneBy(array $criteria, array $orderBy = null)
+ * @method VatRate[]    findAll()
+ * @method VatRate[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class VatRepository extends ServiceEntityRepository
+class VatRateRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
-        parent::__construct($registry, Vat::class);
+        parent::__construct($registry, VatRate::class);
     }
 
     // /**
-    //  * @return Vat[] Returns an array of Vat objects
+    //  * @return VatRate[] Returns an array of VatRate objects
     //  */
     /*
     public function findByExampleField($value)
@@ -37,7 +37,7 @@ class VatRepository extends ServiceEntityRepository
     */
 
     /*
-    public function findOneBySomeField($value): ?Vat
+    public function findOneBySomeField($value): ?VatRate
     {
         return $this->createQueryBuilder('v')
             ->andWhere('v.exampleField = :val')

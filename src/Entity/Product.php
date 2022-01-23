@@ -2,15 +2,12 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Core\Annotation\ApiResource;
 use App\Repository\ProductRepository;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Validator\Constraints as Assert;
-use ApiPlatform\Core\Annotation\ApiResource;
 
 #[ORM\Entity(repositoryClass: ProductRepository::class)]
-/**
- * @ApiResource()
- */
+#[ApiResource]
 class Product
 {
     #[ORM\Id]
@@ -21,10 +18,10 @@ class Product
     #[ORM\Column(type: 'string', length: 255)]
     private $name;
 
-    #[ORM\Column(type: 'string', length: 1000)]
+    #[ORM\Column(type: 'string', length: 1023, nullable: true)]
     private $description;
 
-    #[ORM\Column(type: 'float')]
+    #[ORM\Column(type: 'decimal', precision: 10, scale: 2)]
     private $price;
 
     #[ORM\ManyToOne(targetEntity: Category::class, inversedBy: 'products')]
@@ -53,19 +50,19 @@ class Product
         return $this->description;
     }
 
-    public function setDescription(string $description): self
+    public function setDescription(?string $description): self
     {
         $this->description = $description;
 
         return $this;
     }
 
-    public function getPrice(): ?float
+    public function getPrice(): ?string
     {
         return $this->price;
     }
 
-    public function setPrice(float $price): self
+    public function setPrice(string $price): self
     {
         $this->price = $price;
 

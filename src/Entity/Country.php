@@ -2,17 +2,14 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Core\Annotation\ApiResource;
 use App\Repository\CountryRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Validator\Constraints as Assert;
-use ApiPlatform\Core\Annotation\ApiResource;
 
 #[ORM\Entity(repositoryClass: CountryRepository::class)]
-/**
- * @ApiResource()
- */
+#[ApiResource]
 class Country
 {
     #[ORM\Id]
@@ -27,12 +24,12 @@ class Country
     #[ORM\JoinColumn(nullable: false)]
     private $locale;
 
-    #[ORM\OneToMany(mappedBy: 'country', targetEntity: Vat::class)]
-    private $vats;
+    #[ORM\OneToMany(mappedBy: 'country', targetEntity: VatRate::class)]
+    private $vatRates;
 
     public function __construct()
     {
-        $this->vats = new ArrayCollection();
+        $this->vatRates = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -65,29 +62,29 @@ class Country
     }
 
     /**
-     * @return Collection|Vat[]
+     * @return Collection|VatRate[]
      */
-    public function getVats(): Collection
+    public function getVatRates(): Collection
     {
-        return $this->vats;
+        return $this->vatRates;
     }
 
-    public function addVat(Vat $vat): self
+    public function addVatRate(VatRate $vatRate): self
     {
-        if (!$this->vats->contains($vat)) {
-            $this->vats[] = $vat;
-            $vat->setCountry($this);
+        if (!$this->vatRates->contains($vatRate)) {
+            $this->vatRates[] = $vatRate;
+            $vatRate->setCountry($this);
         }
 
         return $this;
     }
 
-    public function removeVat(Vat $vat): self
+    public function removeVatRate(VatRate $vatRate): self
     {
-        if ($this->vats->removeElement($vat)) {
+        if ($this->vatRates->removeElement($vatRate)) {
             // set the owning side to null (unless already changed)
-            if ($vat->getCountry() === $this) {
-                $vat->setCountry(null);
+            if ($vatRate->getCountry() === $this) {
+                $vatRate->setCountry(null);
             }
         }
 

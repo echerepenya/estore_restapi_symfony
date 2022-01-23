@@ -2,32 +2,29 @@
 
 namespace App\Entity;
 
-use App\Repository\VatRepository;
-use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Validator\Constraints as Assert;
 use ApiPlatform\Core\Annotation\ApiResource;
+use App\Repository\VatRateRepository;
+use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Entity(repositoryClass: VatRepository::class)]
-/**
- * @ApiResource()
- */
-class Vat
+#[ORM\Entity(repositoryClass: VatRateRepository::class)]
+#[ApiResource]
+class VatRate
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
     private $id;
 
-    #[ORM\ManyToOne(targetEntity: Country::class, inversedBy: 'vats')]
+    #[ORM\ManyToOne(targetEntity: Country::class, inversedBy: 'vatRates')]
     #[ORM\JoinColumn(nullable: false)]
     private $country;
 
-    #[ORM\ManyToOne(targetEntity: Category::class, inversedBy: 'vats')]
+    #[ORM\ManyToOne(targetEntity: Category::class, inversedBy: 'vat_rates')]
     #[ORM\JoinColumn(nullable: false)]
     private $category;
 
-    #[ORM\Column(type: 'float')]
-    private $vat_rate;
+    #[ORM\Column(type: 'decimal', precision: 4, scale: 2)]
+    private $vat;
 
     public function getId(): ?int
     {
@@ -58,14 +55,14 @@ class Vat
         return $this;
     }
 
-    public function getVatRate(): ?float
+    public function getVat(): ?string
     {
-        return $this->vat_rate;
+        return $this->vat;
     }
 
-    public function setVatRate(float $vat_rate): self
+    public function setVat(string $vat): self
     {
-        $this->vat_rate = $vat_rate;
+        $this->vat = $vat;
 
         return $this;
     }
