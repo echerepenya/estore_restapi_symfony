@@ -47,4 +47,10 @@ class ProductRepository extends ServiceEntityRepository
         ;
     }
     */
+
+    public function getProduct(): array
+    {
+        return parent::findAll();
+    }
+
 }

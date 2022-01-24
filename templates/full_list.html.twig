@@ -14,18 +14,22 @@
             <thead>
                 <tr>
                     <th scope="col">#</th>
-                    <th scope="col">Country</th>
+                    <th scope="col">Product</th>
                     <th scope="col">Category</th>
+                    <th scope="col">Country</th>
+                    <th scope="col">Locale</th>
                     <th scope="col">VAT</th>
                 </tr>
             </thead>
             <tbody>
-                {% for item in items %}
+                {% for result in results %}
                 <tr>
-                    <td>{{item.id}}</td>
-                    <td>{{item.country.name}}</td>
-                    <td>{{item.category.name}}</td>
-                    <td>{{item.vat}}</td>
+                    <td>{{result.id}}</td>
+                    <td>{{result.product}}</td>
+                    <td>{{result.category}}</td>
+                    <td>{{result.country}}</td>
+                    <td>{{result.locale}}</td>
+                    <td>{{result.vat}}</td>
                 </tr>
                 {% endfor %}
             </tbody>

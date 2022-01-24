@@ -47,4 +47,19 @@ class VatRateRepository extends ServiceEntityRepository
         ;
     }
     */
+
+    public function getFullList(): array
+    {
+        $qb = $this->createQueryBuilder(alias: 'v')
+            ->select(select: array('v.id', 'v.vat', 'cat.name as category', 'ctr.name as country', 'p.name as product', 'l.iso1 as locale'))
+            ->leftJoin(join: 'v.category', alias: 'cat')
+            ->leftJoin(join: 'v.country', alias: 'ctr')
+            ->innerJoin(join: 'cat.products', alias: 'p')
+            ->leftJoin(join: 'ctr.locale', alias: 'l');
+
+        $query = $qb->getQuery();
+        return $query->execute();
+    }
+
+
 }

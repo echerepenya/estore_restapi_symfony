@@ -8,10 +8,11 @@ use Symfony\Component\Routing\Annotation\Route;
 use App\Repository\ProductRepository;
 use App\Repository\LocaleRepository;
 use App\Repository\VatRateRepository;
+
 class IndexController extends AbstractController
 {
     
-    #[Route('/', name: 'product_list')]
+    #[Route('/', name: 'homepage')]
     /**
      * @return Response
      */
@@ -26,6 +27,7 @@ class IndexController extends AbstractController
         ]);
     }
 
+    
     #[Route('/locale', name: 'locale_list')]
     /**
      * @return Response
@@ -47,12 +49,29 @@ class IndexController extends AbstractController
      */
     public function vatList(VatRateRepository $itemsRepository): Response
     {
+        
         $items = $itemsRepository->findAll();
 
         //dd($items);
         return $this->render('vat.html.twig', [
             'title' => 'VAT Rates',
             'items' => $items
+        ]);
+    }
+
+    #[Route('/full-list', name: 'fl')]
+    /**
+     * @return Response
+     */
+    public function vat_filter(VatRateRepository $itemsRepository): Response
+    {
+        
+        $query_result = $itemsRepository->getFullList();
+        //dd($query_result);
+
+        return $this->render('full_list.html.twig', [
+            'title' => 'Full list of records',
+            'results' => $query_result
         ]);
     }
 

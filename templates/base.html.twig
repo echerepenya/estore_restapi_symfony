@@ -32,13 +32,19 @@
                     <div class="collapse navbar-collapse" id="navbarCollapse">
                         <ul class="navbar-nav me-auto mb-2 mb-md-0">
                             <li class="nav-item">
-                                <a class="nav-link" href="{{ path('product_list') }}">Product</a>
+                                <a class="nav-link" href="{{ path('homepage') }}">Product</a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link" href="{{ path('locale_list') }}">Locale</a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link" href="{{ path('vat_list') }}">VAT rates</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ path('fl') }}">Full list</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ absolute_url('/api/') }}"/>API</a>
                             </li>
                         </ul>
                         <form class="d-flex">
