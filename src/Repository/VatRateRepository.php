@@ -5,6 +5,9 @@ namespace App\Repository;
 use App\Entity\VatRate;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\ORM\Query\Parameter;
+
 
 /**
  * @method VatRate|null find($id, $lockMode = null, $lockVersion = null)
@@ -56,6 +59,25 @@ class VatRateRepository extends ServiceEntityRepository
             ->leftJoin(join: 'v.country', alias: 'ctr')
             ->innerJoin(join: 'cat.products', alias: 'p')
             ->leftJoin(join: 'ctr.locale', alias: 'l');
+
+        $query = $qb->getQuery();
+        return $query->execute();
+    }
+
+    public function getProductLocale(int $p_id, int $l_iso): array
+    {
+        $qb = $this->createQueryBuilder(alias: 'v')
+            ->select(select: array('v.id', 'v.vat', 'cat.name as category', 'ctr.name as country', 'p.name as product', 'l.iso1 as locale'))
+            ->leftJoin(join: 'v.category', alias: 'cat')
+            ->leftJoin(join: 'v.country', alias: 'ctr')
+            ->innerJoin(join: 'cat.products', alias: 'p')
+            ->leftJoin(join: 'ctr.locale', alias: 'l')
+            ->where('p.id = :p_id')
+            ->andWhere('l.iso1 = :l_iso')
+            ->setParameters(new ArrayCollection([
+                new Parameter('p_id', $p_id),
+                new Parameter('l_iso', $l_iso)
+            ]));
 
         $query = $qb->getQuery();
         return $query->execute();
