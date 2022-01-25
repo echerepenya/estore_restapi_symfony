@@ -48,9 +48,18 @@ class ProductRepository extends ServiceEntityRepository
     }
     */
 
-    public function getProduct(): array
+    public function findPresentProduct(): array
     {
-        return parent::findAll();
+        $qb = $this->createQueryBuilder(alias: 'p')
+            ->select(select: array('p.id', 'p.name'))
+            ->distinct()
+            ->innerJoin(join: 'p.category', alias: 'ca')
+            ->innerJoin(join: 'ca.vat_rates', alias: 'v')
+            ->innerJoin(join: 'v.country', alias: 'c')
+            ->innerJoin(join: 'c.locale', alias: 'l');
+
+    $query = $qb->getQuery();
+    return $query->execute();
     }
 
 }
