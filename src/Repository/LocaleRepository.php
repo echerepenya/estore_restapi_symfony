@@ -47,4 +47,21 @@ class LocaleRepository extends ServiceEntityRepository
         ;
     }
     */
+
+    /**
+     * @return array
+     */
+    public function findUsedLocale(): array
+    {
+        $qb = $this->createQueryBuilder(alias: 'l')
+            ->select(select: array('l.id', 'l.iso1'))
+            ->distinct()
+            ->innerJoin(join: 'l.country', alias: 'c')
+            ->innerJoin(join: 'c.vatRates', alias: 'v')
+            ->innerJoin(join: 'v.category', alias: 'ca')
+            ->innerJoin(join: 'ca.products', alias: 'p');
+
+    $query = $qb->getQuery();
+    return $query->execute();
+    }
 }

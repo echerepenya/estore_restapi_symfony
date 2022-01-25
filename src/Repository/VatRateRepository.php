@@ -51,40 +51,33 @@ class VatRateRepository extends ServiceEntityRepository
     }
     */
 
-    public function getFullList(): array
+    /**
+     * @return array
+     */
+    public function getFullList(int $p_id = 0, string $l_iso = "0"): array
     {
         $qb = $this->createQueryBuilder(alias: 'v')
             ->select(select: array('v.id', 'v.vat',
-                                    'cat.name as category', 'ctr.name as country',
-                                    'p.name as product', 'p.description', 'p.price', '(p.price + p.price*v.vat/100) as gross_price',
-                                    'l.iso1 as locale', ))
+                    'cat.name as category', 'ctr.name as country',
+                    'p.name as product', 'p.description', 'p.price', '(p.price + p.price*v.vat/100) as gross_price',
+                    'l.iso1 as locale', ))
             ->leftJoin(join: 'v.category', alias: 'cat')
-            ->leftJoin(join: 'v.country', alias: 'ctr')
             ->innerJoin(join: 'cat.products', alias: 'p')
+            ->leftJoin(join: 'v.country', alias: 'ctr')
             ->leftJoin(join: 'ctr.locale', alias: 'l');
 
-        $query = $qb->getQuery();
-        return $query->execute();
-    }
+        if ($p_id != 0)
+        {
+            $qb->where('p.id = :p_id')
+                ->setParameter('p_id', $p_id);
+        }
 
-    public function getVatByConditions(int $p_id, string $l_iso): array
-    {
-        $qb = $this->createQueryBuilder(alias: 'v')
-            ->select(select: array('v.id', 'v.vat',
-                                    'cat.name as category', 'ctr.name as country',
-                                    'p.name as product', 'p.description', 'p.price', '(p.price + p.price*v.vat/100) as gross_price',
-                                    'l.iso1 as locale', ))
-                                    ->leftJoin(join: 'v.category', alias: 'cat')
-            ->leftJoin(join: 'v.country', alias: 'ctr')
-            ->innerJoin(join: 'cat.products', alias: 'p')
-            ->leftJoin(join: 'ctr.locale', alias: 'l')
-            ->where('p.id = :p_id')
-            ->andWhere('l.iso1 = :l_iso')
-            ->setParameters(new ArrayCollection([
-                new Parameter('p_id', $p_id),
-                new Parameter('l_iso', $l_iso)
-            ]));
-
+        if ($l_iso != "0")
+        {
+            $qb->andWhere('l.iso1 = :l_iso')
+                ->setParameter('l_iso', $l_iso);
+        }
+        
         $query = $qb->getQuery();
         return $query->execute();
     }

@@ -26,7 +26,7 @@ final class SearchService implements DataPersisterInterface
         
 
         $output = new SearchResult();
-        $output->result = $this->vr->getVatByConditions($product_id, $locale_iso);
+        $output->result = $this->vr->getFullList($product_id, $locale_iso);
         
         return $output;
     }

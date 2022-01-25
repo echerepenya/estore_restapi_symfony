@@ -43,4 +43,33 @@
     </div>
 </div>
 
+<div class="container fluid">
+    <div class="row">
+        <div class="col-2">
+                <label for='product_dropdown'>Products</label>
+                <select name='' id='product_dropdown'>
+                    <option value="" selected>No filter</option>
+                    {% for product in products %}
+                    <option value='{{ product.id }}'>
+                        {{ product.name }}
+                    </option>
+                    {% endfor %}
+                </select>
+                
+        </div>
+        <div class="col-2">
+                <label for='locale_dropdown'>Locales</label>
+                <select name='' id='locale_dropdown'>
+                    <option value="" selected>No filter</option>
+                    {% for locale in locales %}
+                    <option value='{{ locale.id }}'>
+                        {{ locale.iso1 }}
+                    </option>
+                    {% endfor %}
+                </select>
+                
+        </div>
+    </div>
+</div>
+
 {% endblock %}
