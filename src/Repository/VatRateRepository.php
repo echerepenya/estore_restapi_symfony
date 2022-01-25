@@ -80,6 +80,7 @@ class VatRateRepository extends ServiceEntityRepository
         
         $query = $qb->getQuery();
         return $query->execute();
+        
     }
 
 }
