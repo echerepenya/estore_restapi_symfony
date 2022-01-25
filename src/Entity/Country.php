@@ -28,17 +28,16 @@ class Country
     private $id;
 
     #[ORM\Column(type: 'string', length: 255, unique: true)]
-    #[Groups(["country:read", "country:write", "locale:read", "locale:write", "vat:read"])]
+    #[Groups(["country:read", "country:write", "locale:read", "locale:write", "vat:read", "vat:write"])]
     #[Assert\Valid()]
     private $name;
 
     #[ORM\OneToOne(inversedBy: 'country', targetEntity: Locale::class, cascade: ['persist', 'remove'])]
     #[ORM\JoinColumn(nullable: false)]
-    #[Groups(["country:read", "country:write", "locale:read"])]
+    #[Groups(["country:read", "country:write"])]
     private $locale;
 
     #[ORM\OneToMany(mappedBy: 'country', targetEntity: VatRate::class)]
-    #[Groups(["country:read", "locale:read"])]
     private $vatRates;
 
     public function __construct()

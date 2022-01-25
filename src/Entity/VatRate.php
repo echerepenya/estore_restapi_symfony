@@ -47,7 +47,7 @@ class VatRate
      *      notInRangeMessage = "Values from {{ min }} to {{ max }} are acceptable",
      * )
      */
-    #[Groups(["vat:read", "vat:write", "product:read", "locale:read"])]
+    #[Groups(["vat:read", "vat:write"])]
     private $vat;
 
     public function getId(): ?int

@@ -26,16 +26,14 @@ class Category
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
-    #[Groups(["category:read", "category:write", "product:read", "product:write"])]
     private $id;
 
     #[ORM\Column(name: 'name', type: 'string', length: 255, unique: true)]
-    #[Groups(["category:read", "category:write", "product:read", "product:write", "vat:read"])]
-    //#[Assert\Valid()]
+    #[Groups(["category:read", "category:write", "product:read", "vat:read", "vat:write"])]
+    #[Assert\Valid()]
     private $name;
 
     #[ORM\OneToMany(mappedBy: 'category', targetEntity: VatRate::class)]
-    #[Groups(["category:read", "product:read"])]
     private $vat_rates;
 
     #[ORM\OneToMany(mappedBy: 'category', targetEntity: Product::class)]
