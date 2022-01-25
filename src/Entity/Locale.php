@@ -7,6 +7,8 @@ use App\Repository\LocaleRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
+use ApiPlatform\Core\Annotation\ApiFilter;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\BooleanFilter;
 
 #[ORM\Entity(repositoryClass: LocaleRepository::class)]
 #[ApiResource(
@@ -17,6 +19,9 @@ use Symfony\Component\Validator\Constraints as Assert;
         'groups' => ['locale:write'],
     ],
 )]
+/**
+ * @ApiFilter(BooleanFilter::class, properties={"iso1"})
+ */
 #[UniqueEntity("name")]
 #[UniqueEntity("iso1")]
 class Locale

@@ -54,7 +54,10 @@ class VatRateRepository extends ServiceEntityRepository
     public function getFullList(): array
     {
         $qb = $this->createQueryBuilder(alias: 'v')
-            ->select(select: array('v.id', 'v.vat', 'cat.name as category', 'ctr.name as country', 'p.name as product', 'l.iso1 as locale'))
+            ->select(select: array('v.id', 'v.vat',
+                                    'cat.name as category', 'ctr.name as country',
+                                    'p.name as product', 'p.description', 'p.price', '(p.price + p.price*v.vat/100) as gross_price',
+                                    'l.iso1 as locale', ))
             ->leftJoin(join: 'v.category', alias: 'cat')
             ->leftJoin(join: 'v.country', alias: 'ctr')
             ->innerJoin(join: 'cat.products', alias: 'p')
@@ -64,11 +67,14 @@ class VatRateRepository extends ServiceEntityRepository
         return $query->execute();
     }
 
-    public function getProductLocale(int $p_id, int $l_iso): array
+    public function getVatByConditions(int $p_id, string $l_iso): array
     {
         $qb = $this->createQueryBuilder(alias: 'v')
-            ->select(select: array('v.id', 'v.vat', 'cat.name as category', 'ctr.name as country', 'p.name as product', 'l.iso1 as locale'))
-            ->leftJoin(join: 'v.category', alias: 'cat')
+            ->select(select: array('v.id', 'v.vat',
+                                    'cat.name as category', 'ctr.name as country',
+                                    'p.name as product', 'p.description', 'p.price', '(p.price + p.price*v.vat/100) as gross_price',
+                                    'l.iso1 as locale', ))
+                                    ->leftJoin(join: 'v.category', alias: 'cat')
             ->leftJoin(join: 'v.country', alias: 'ctr')
             ->innerJoin(join: 'cat.products', alias: 'p')
             ->leftJoin(join: 'ctr.locale', alias: 'l')
@@ -82,6 +88,5 @@ class VatRateRepository extends ServiceEntityRepository
         $query = $qb->getQuery();
         return $query->execute();
     }
-
 
 }
