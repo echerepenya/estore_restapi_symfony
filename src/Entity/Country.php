@@ -29,7 +29,6 @@ class Country
 
     #[ORM\Column(type: 'string', length: 255, unique: true)]
     #[Groups(["country:read", "country:write", "locale:read", "locale:write", "vat:read", "vat:write"])]
-    #[Assert\Valid()]
     private $name;
 
     #[ORM\OneToOne(inversedBy: 'country', targetEntity: Locale::class, cascade: ['persist', 'remove'])]

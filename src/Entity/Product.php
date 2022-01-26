@@ -28,7 +28,6 @@ class Product
 
     #[ORM\Column(type: 'string', length: 255, unique: true)]
     #[Groups(["product:read", "product:write", "category:read"])]
-    #[Assert\Valid()]
     private $name;
 
     #[ORM\Column(type: 'string', length: 1023, nullable: true)]
@@ -37,7 +36,6 @@ class Product
 
     #[ORM\Column(type: 'decimal', precision: 10, scale: 2)]
     #[Groups(["product:read", "product:write", "category:read"])]
-    #[Assert\Valid()]
     private $price;
 
     #[ORM\ManyToOne(targetEntity: Category::class, inversedBy: 'products')]

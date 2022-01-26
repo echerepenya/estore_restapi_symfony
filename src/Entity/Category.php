@@ -30,7 +30,6 @@ class Category
 
     #[ORM\Column(name: 'name', type: 'string', length: 255, unique: true)]
     #[Groups(["category:read", "category:write", "product:read", "vat:read", "vat:write"])]
-    #[Assert\Valid()]
     private $name;
 
     #[ORM\OneToMany(mappedBy: 'category', targetEntity: VatRate::class)]

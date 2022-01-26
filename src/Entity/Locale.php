@@ -33,12 +33,10 @@ class Locale
 
     #[ORM\Column(type: 'string', length: 255, unique: true)]
     #[Groups(["locale:read", "locale:write", "country:read", "country:write"])]
-    #[Assert\Valid()]
     private $name;
 
     #[ORM\Column(type: 'string', length: 5, unique: true)]
     #[Groups(["locale:read", "locale:write", "country:read", "country:write"])]
-    #[Assert\Valid()]
     private $iso1;
 
     #[ORM\OneToOne(mappedBy: 'locale', targetEntity: Country::class, cascade: ['persist', 'remove'])]
