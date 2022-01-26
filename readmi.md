@@ -14,4 +14,4 @@
 <p>In addition to this, custom endpoint <b>Search</b> was designed to do search by two conditions (product ID and locale's code). It uses POST method to get json data and waiting two variables as an input. If it receives both variable equal to 0 (zero), endpoint returns full list of products and VAT rates for all available countries. Data Transfer Objects and DataPersistentInterface are used for custom endpoint design</p>
 
 <p>The scheme of entities relation:</p>
-<img src='./git_screens/entities-relation.jpg' alt='Entities relation scheme' style='max-width: 50%;'>
+<img src='[https://github.com/echerepenya/estore_restapi_symfony/blob/main/public/git_screens/entities-relation.jpg' alt='Entities relation scheme' style='max-width: 50%;'>
