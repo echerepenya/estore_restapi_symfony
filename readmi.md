@@ -1,3 +1,5 @@
+# estore_restapi_symfony
+
 REST API with custom CRUD endpoints
 ======
 Simple REST API as a international backend that can be used by multiple online stores over the world. It allows any connected clients to get an information in convenient JSON format for further processing
@@ -32,10 +34,9 @@ VAT - not empty, numbers from 0 to 20
 All names - not empty, unique, string  
 Product description - string, up to 1000 symbols
 
----
 Deployment
 ------
 
-* docker-compose.yaml for database deployment. Initial dataset automatically inserts during container building. Use _docker-compose up -d_ command
+* docker-compose.yaml for database deployment. Initial dataset is automatically inserted during container building. Use _docker-compose up -d_ command
 * composer.json for required dependencies control
 
