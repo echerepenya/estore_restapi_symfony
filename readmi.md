@@ -12,10 +12,29 @@ Available options for getting an information
 
 The progect is built with Symfony PHP framework, including Doctrine db manager and API Platform
 
-Standard API Platform CRUD endpoints are fully functional for getting and updating data, including nested entities update (@APIPlatform annotations for entities are used)
-
-In addition to this, custom endpoint **Search** was designed to do search by two conditions (product ID and locale's code). It uses POST method to get json data and accepts two variables as an input. If it receives both variable equal to 0 (zero), endpoint returns full list of products and VAT rates for all available countries. Data Transfer Objects and DataPersistentInterface are used for custom endpoint design  
-
 The scheme of entities relation:
+![Relations scheme](/assets/entities-relation.jpg)
 
-![Relations](/estore_restapi_symfony/docs/assets/entities-relation.jpg)
+All entities are available as standard API Platform CRUD endpoints. They are fully functional for getting and updating data, including nested entities update
+
+In addition to this, custom endpoint **Search** was designed to do search by two conditions (product's ID and locale's code). It uses POST method to get json data and accepts two variables as an input. If it receives both variable equal to 0 (zero), endpoint returns full list of products and VAT rates for all available countries. Data Transfer Objects and DataPersistentInterface are used for custom endpoint design (it really wasn't easy to find a solution to make custom endpoint not related to any entity)
+
+To simplify reading of values of main enities, simple dashboard panel was made. It is available at main page of the site. Main menu with all links are on the TOP panel
+
+![Dashboard screenshot](/assets/dashboard.jpg)
+---
+
+Input data validation and restriction
+------
+
+VAT - not empty, numbers from 0 to 20  
+All names - not empty, unique, string  
+Product description - string, up to 1000 symbols
+
+---
+Deployment
+------
+
+* docker-compose.yaml for database deployment. Initial dataset automatically inserts during container building. Use _docker-compose up -d_ command
+* composer.json for required dependencies control
+
