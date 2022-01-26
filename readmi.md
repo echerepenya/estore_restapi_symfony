@@ -18,6 +18,7 @@ The scheme of entities relation:
 All entities are available as standard API Platform CRUD endpoints. They are fully functional for getting and updating data, including nested entities update
 
 In addition to this, custom endpoint **Search** was designed to do search by two conditions (product's ID and locale's code). It uses POST method to get json data and accepts two variables as an input. If it receives both variable equal to 0 (zero), endpoint returns full list of products and VAT rates for all available countries. Data Transfer Objects and DataPersistentInterface are used for custom endpoint design (it really wasn't easy to find a solution to make custom endpoint not related to any entity)
+![API - Search](/assets/api-screenshot.jpg)
 
 To simplify reading of values of main enities, simple dashboard panel was made. It is available at main page of the site. Main menu with all links are on the TOP panel
 
