@@ -18,4 +18,4 @@ In addition to this, custom endpoint **Search** was designed to do search by two
 
 The scheme of entities relation:
 
-![Relations](https://github.com/echerepenya/estore_restapi_symfony/blob/main/public/git_screens/entities-relation.jpg)
+![Relations](/estore_restapi_symfony/docs/assets/entities-relation.jpg)
