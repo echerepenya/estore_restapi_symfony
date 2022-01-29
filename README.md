@@ -37,6 +37,9 @@ Product description - string, up to 1000 symbols
 Deployment
 ------
 
-* docker-compose.yaml for database deployment. Initial dataset is automatically inserted during container building. Use _docker-compose up -d_ command
-* composer.json for required dependencies control
-
+* you need a Docker and Composer to be installed
+* download this repository as .zip file and extract it to one folder
+* open a shell and go to new folder prom previous step
+* run "docker-compose up -d"
+* open _localhost:8100_ in your browser
+* enjoy!
