@@ -35,6 +35,8 @@ services:
     - ./:/var/www/project/:cached # Location of the project for php-fpm. Note this should be the same for NGINX.*
     networks:
     - symfony # Docker containers (services) that need to connect to each other should be on the same network.
+    depends_on:
+      - database
 
   nginx:
     container_name: nginx
@@ -47,17 +49,20 @@ services:
     - 8100:80 # Ports that are exposed, you can connect to port 8080 to port 80 of the container.
     networks:
     - symfony
+    depends_on:
+      - database
+      - fpm
 
-  phpmyadmin:
-    container_name: phpmyadmin
-    image: phpmyadmin/phpmyadmin
-    ports:
-        - "8080:80"
-    environment:
-        PMA_HOST: database
-        PMA_PORT: 3306
-    networks:
-      - symfony
+  #phpmyadmin:
+  #  container_name: phpmyadmin
+  #  image: phpmyadmin/phpmyadmin
+  #  ports:
+  #      - "8080:80"
+  #  environment:
+  #      PMA_HOST: database
+  #      PMA_PORT: 3306
+  #  networks:
+  #    - symfony
 
 volumes:
 ###> doctrine/doctrine-bundle ###
