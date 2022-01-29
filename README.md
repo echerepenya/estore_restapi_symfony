@@ -4,9 +4,8 @@ REST API with custom CRUD endpoints
 ======
 Simple REST API as a international backend that can be used by multiple online stores over the world. It allows any connected clients to get an information in convenient JSON format for further processing
 
-Live demo is <a href="http://92.244.114.8/" target="_blank">HERE</a>
+Click [HERE](http://92.244.114.8/) to see live demo
 ---
-
 Available options for getting an information
 
 * **Search for the full details on particular product including its net price, VAT and gross price by product ID and locale code**
