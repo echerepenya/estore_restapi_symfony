@@ -1,0 +1,2 @@
+FROM mysql:latest
+COPY build/db/ ./docker-entrypoint-initdb.d/
